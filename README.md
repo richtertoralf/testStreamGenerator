@@ -62,7 +62,7 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 ```
 ### srt-Stream
 ```
-targetServer="rtmp://meineStreamServerIP/live/srtTest"
+targetServer="srt://meineStreamServerIP:srtPort?...und paar Argumente"
 ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
 ```
 
