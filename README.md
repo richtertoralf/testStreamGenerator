@@ -53,3 +53,17 @@ else
 fi
 
 ```
+
+## Teststream generieren
+### rtmp-Stream
+```
+targetServer="rtmp://meineStreamServerIP/live/rtmpTest"
+ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
+```
+### srt-Stream
+```
+targetServer="rtmp://meineStreamServerIP/live/srtTest"
+ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
+```
+
+```
