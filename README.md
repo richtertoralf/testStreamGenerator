@@ -67,3 +67,31 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 ```
 
 ```
+
+## als Dienst (systemd) einrichten
+Damit wird das FFmpeg bei jedem Start des Servers ausgeführt.
+Im Beispiel fehlt aktuell allerdings noch jegliche Konfigurationsmöglchkeit. Das kommt später.
+
+`cd /etc/systemd/system`  
+`sudo nano testStreamGenerate.service`  
+
+und Einfügen:  
+```
+[Unit]
+Description=static testStream push to Stream Server
+
+[Service]
+Type=simple
+After=network.target
+Restart=always
+ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv rtmp://meineStreamServerIP/live>
+
+[Install]
+WantedBy=multi-user.target
+```
+[Strg]+[o] und [Strg]+[x]
+
+sudo systemctl daemon-reload  
+sudo systemctl enable akkubox  
+sudo systemctl start akkubox  
+sudo systemctl status akkubox  
