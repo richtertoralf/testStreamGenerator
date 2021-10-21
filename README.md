@@ -66,8 +66,6 @@ targetServer="rtmp://meineStreamServerIP/live/srtTest"
 ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
 ```
 
-```
-
 ## als Dienst (systemd) einrichten
 Damit wird FFmpeg bei jedem Start des Servers ausgeführt.
 Im Beispiel fehlt aktuell allerdings noch jegliche Konfigurationsmöglchkeit! Das kommt später.
@@ -92,7 +90,9 @@ WantedBy=multi-user.target
 ```
 [Strg]+[o] und [Strg]+[x]
 
+```
 sudo systemctl daemon-reload  
 sudo systemctl enable testStreamGenerate
 sudo systemctl start testStreamGenerate
 sudo systemctl status testStreamGenerate
+``` 
