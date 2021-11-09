@@ -15,7 +15,7 @@ make
 sudo make install
 
 ```
-Das Folgende kannst du in eine Skript einfügen, um zu prüfen, ob die Installation erfolgreich war.
+Das Folgende kannst du in ein Skript einfügen, um zu prüfen, ob die Installation erfolgreich war.
 ```
 # test if srt-live-transmit was installed correctly
 srt_version="$(srt-live-transmit -version 2>&1)"
