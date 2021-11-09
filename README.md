@@ -63,24 +63,25 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 ### srt-Stream
 ```
 targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
-ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
+ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f mpegts $targetServer
 ```
-Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT caller abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten. 
+Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT caller abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten.  
 - https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md
 - https://ffmpeg.org/ffmpeg-protocols.html#srt
 
-## als Dienst (systemd) einrichten
+## als Dienste (systemd) einrichten
 Damit wird FFmpeg bei jedem Start des Servers ausgeführt.
 Im Beispiel fehlt aktuell allerdings noch jegliche Konfigurationsmöglchkeit! Das kommt später.
-Aktuell kannst du so den Server nur anhalten und wieder starten. Mehr nicht!! Der Teststream (rtmp) wird dann zum angegebenen RestreamServer oder zu Youtube oder wohin du auch willst gesendet.
+Aktuell kannst du so den Server nur anhalten und wieder starten. Mehr nicht!! Der Teststream (rtmp) wird dann zum angegebenen RestreamServer oder zu Youtube oder wohin du auch willst gesendet und kann als SRT-Stream als caller abgerufen werden. Im folgenden werden zwei Dienste eingerichtet.
 
+### rtmpStreamGenerate.service
 `cd /etc/systemd/system`  
-`sudo nano testStreamGenerate.service`  
+`sudo nano rtmpStreamGenerate.service`  
 
 und Einfügen:  
 ```
 [Unit]
-Description=static testStream push to Stream Server
+Description=static rtmp testStream push to Stream Server
 
 [Service]
 Type=simple
@@ -92,6 +93,27 @@ ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -v
 WantedBy=multi-user.target
 ```
 [Strg]+[o] und [Strg]+[x]
+
+### srtStreamGenerate.service
+`cd /etc/systemd/system`  
+`sudo nano srtStreamGenerate.service`  
+
+und Einfügen:  
+```
+[Unit]
+Description=static srt listener testStream
+
+[Service]
+Type=simple
+After=network.target
+Restart=always
+ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f mpegts 'srt://0.0.0.0:9999?mode=listener&pkt_size=1316'
+
+[Install]
+WantedBy=multi-user.target
+```
+[Strg]+[o] und [Strg]+[x]
+
 
 ```
 sudo systemctl daemon-reload  
