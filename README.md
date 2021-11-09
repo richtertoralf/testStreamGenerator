@@ -1,6 +1,6 @@
 # testStreamGenerator
 
-# Ubuntu 20.04
+getestet auf Ubuntu 20.04  
 # Installationen
 ## srt-live-ransmit
 >The srt-live-transmit tool is a universal data transport tool with a purpose to transport data between SRT and other medium. At the same time it is just a sample application to show some of the powerful features of SRT. We encourage you to use SRT library itself integrated into your products.  
@@ -27,7 +27,9 @@ else
     exit
 fi
 
-```
+```   
+> Da ich im Folgenden einen "Static Build" von FFmpeg installiere, bei dem die SRT Bibliothek schon eingebunden ist, muss srt-live-transmit eigentlich nicht wie oben beschrieben installiert werden. Für weitere spätere Testzwecke habe ich die srt-live-transmit trotzdem schon mal installiert.  
+
 ## FFmpeg
 > FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything that humans and machines have created. It supports the most obscure ancient formats up to the cutting edge. No matter if they were designed by some standards committee, the community or a corporation. It is also highly portable: FFmpeg compiles, runs, and passes our testing infrastructure FATE across Linux, Mac OS X, Microsoft Windows, the BSDs, Solaris, etc. under a wide variety of build environments, machine architectures, and configurations.
 
