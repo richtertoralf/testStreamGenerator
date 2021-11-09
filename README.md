@@ -87,7 +87,7 @@ Description=static rtmp testStream push to Stream Server
 Type=simple
 After=network.target
 Restart=always
-ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv rtmp://meineStreamServerIP/live/rtmptTest
+ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv rtmp://meineStreamServerIP/live/rtmpTest
 
 [Install]
 WantedBy=multi-user.target
@@ -117,7 +117,12 @@ WantedBy=multi-user.target
 
 ```
 sudo systemctl daemon-reload  
-sudo systemctl enable testStreamGenerate
-sudo systemctl start testStreamGenerate
-sudo systemctl status testStreamGenerate
+# rtmp
+sudo systemctl enable rtmpStreamGenerate
+sudo systemctl start rtmpStreamGenerate
+sudo systemctl status rtmpStreamGenerate
+# srt
+sudo systemctl enable srtStreamGenerate
+sudo systemctl start srtStreamGenerate
+sudo systemctl status srtStreamGenerate
 ``` 
