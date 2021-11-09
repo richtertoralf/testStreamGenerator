@@ -66,7 +66,8 @@ targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
 ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv $targetServer
 ```
 Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT caller abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten. 
-- !https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md
+- https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md
+- https://ffmpeg.org/ffmpeg-protocols.html#srt
 
 ## als Dienst (systemd) einrichten
 Damit wird FFmpeg bei jedem Start des Servers ausgeführt.
