@@ -80,11 +80,11 @@ Im Beispiel fehlt aktuell allerdings noch jegliche Konfigurationsmöglchkeit! Da
 Du kannst den Status der Dienste so abfragen:  
 - `systemctl status rtmpStreamGenerate` oder 
 - `systemctl status srtStreamGenerate`  
-Den **rtmp**-Teststream kannst du z.B. zu einem RestreamServer oder zu Youtube oder wohin du auch willst senden. Du musst nur die `rtmp://xxx.xxx.xxx.xxx/??/??` entsprechend anpassen. 
-Der **srt**-Teststream liegt dagegen auf diesem Server bereit. Du kannst ihn z.B. mit OBS Studio so direkt abrufen:  
+>Den **rtmp**-Teststream kannst du z.B. zu einem RestreamServer oder zu Youtube oder wohin du auch willst senden. Du musst nur die `rtmp://xxx.xxx.xxx.xxx/??/??` entsprechend anpassen.
+>Der **srt**-Teststream liegt dagegen auf diesem Server bereit. Du kannst ihn z.B. mit OBS Studio so direkt abrufen:  
 Eingabe: `srt://<die Server-IP dieses TestStreamGenerator>:9999?mode=caller`  
 Eingabeformat: `mpegts`  
-SRT benötigt einen UDP Port. Ich habe 9999 gewählt. Dieser Port muss hier auf dem Server geöffnet werden, damit SRT funktioniert.
+SRT benötigt einen UDP Port. Ich habe 9999 gewählt. Dieser Port muss hier auf dem Server geöffnet werden, damit SRT funktioniert.  
 
 ### rtmpStreamGenerate.service
 `cd /etc/systemd/system`  
