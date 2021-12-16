@@ -96,6 +96,7 @@ Description=static rtmp testStream push to Stream Server
 Type=simple
 After=network.target
 Restart=always
+RestartSec=20
 ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f flv rtmp://meineStreamServerIP/live/rtmpTest
 
 [Install]
