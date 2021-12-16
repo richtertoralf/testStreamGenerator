@@ -58,7 +58,7 @@ fi
 
 ```
 
-## Teststream generieren
+## Teststream mit FFmpeg generieren
 ### rtmp-Stream
 ```
 targetServer="rtmp://meineStreamServerIP/live/rtmpTest"
@@ -69,7 +69,7 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
 ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f mpegts $targetServer
 ```
-Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT caller abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten.  
+Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT **caller** abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten.  
 - https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md
 - https://ffmpeg.org/ffmpeg-protocols.html#srt
 **Achtung:** Der hier verwendete Port 9999 muss in der Firewall für UDP-Verkehr freigegeben werden.
