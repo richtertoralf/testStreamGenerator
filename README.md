@@ -70,6 +70,7 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT caller abgerufen werden. Das SRT Protokoll bietet noch jede Menge weiterer Konfigurationsmöglichkeiten.  
 - https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md
 - https://ffmpeg.org/ffmpeg-protocols.html#srt
+**Achtung:** Der hier verwendete Port 9999 muss in der Firewall für UDP-Verkehr freigegeben werden.
 
 ## als Dienste (systemd) einrichten
 Damit wird FFmpeg bei jedem Neustart des Servers gestartet und ausgeführt.
