@@ -1,7 +1,7 @@
 # testStreamGenerator
 
 getestet auf Ubuntu 20.04  
->Ich habe diesen "TestStreamGenerator" auf einem kleinen virtuellen Server in der Cloud laufen. Ich simmuliere damit Streams, um z.B. zu testen, ob OBS oder vMix Instanzen, die ich in der Cloud installiert habe, Streams empfangen können.  
+>Ich habe diesen "TestStreamGenerator" auf einem kleinen virtuellen Server in der Cloud laufen. Ich simuliere damit Streams, um z.B. zu testen, ob OBS oder vMix Instanzen, die ich in der Cloud installiert habe, Streams empfangen können.  
 
 # Installationen
 ## srt-live-ransmit
