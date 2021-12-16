@@ -102,7 +102,8 @@ ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -v
 
 [Install]
 WantedBy=multi-user.target
-```
+```   
+"RestartSec=20" verwende ich, da mein RestreamServer schnelle Wiederverbindungsversuche blockiert.  
 [Strg]+[o] und [Strg]+[x]
 
 ### srtStreamGenerate.service
@@ -122,8 +123,10 @@ ExecStart=/usr/local/bin/ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -v
 
 [Install]
 WantedBy=multi-user.target
-```
-[Strg]+[o] und [Strg]+[x]
+```  
+Der bei "srt://0.0.0.0:xxxx" verwendete Port muss für UDP Datenverkehr in der Firewall geöffnet sein!   
+Wenn "pkt_size=1316" nicht angegeben wird, funktioniert OBS (manchmal) nicht (Stand 12/2021).  
+[Strg]+[o] und [Strg]+[x]  
 
 
 ```
