@@ -75,6 +75,17 @@ Das SRT Protokoll bietet aber noch jede Menge weiterer Konfigurationsmöglichkei
 - https://github.com/Haivision/srt/blob/master/docs/apps/srt-live-transmit.md  
 - https://ffmpeg.org/ffmpeg-protocols.html#srt  
 
+### weitere Varianten
+```
+# Textdatei, mit sich selbst aktualisierender Uhrzeit erzeugen:
+while [ true ]; do date +%T,%1N > text.txt ; sleep 0.9 ;  done
+
+# FFmpeg
+targetserver="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
+ffmpeg -v debug  -f lavfi -i smptehdbars=size=1920x1080:rate=30 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900"  -f mpegts $targetServer
+
+```
+
 ## als Dienste (systemd) einrichten
 Damit wird FFmpeg bei jedem Neustart des Servers gestartet und ausgeführt.
 Im Beispiel fehlt aktuell allerdings noch jegliche Konfigurationsmöglchkeit! Das kommt später.  
