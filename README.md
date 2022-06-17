@@ -2,6 +2,7 @@
 
 getestet auf Ubuntu 20.04  
 >Ich habe diesen "TestStreamGenerator" auf einem kleinen virtuellen Server in der Cloud laufen. Ich simuliere damit Streams, um z.B. zu testen, ob OBS oder vMix Instanzen, die ich in der Cloud installiert habe, Streams empfangen können.  
+**... und paar Ideen.**
 
 # Installationen
 ## srt-live-ransmit
@@ -154,3 +155,55 @@ sudo systemctl enable srtStreamGenerate
 sudo systemctl start srtStreamGenerate
 sudo systemctl status srtStreamGenerate
 ``` 
+
+# SRT zu HLS
+```
+ffmpeg SRT --> HLS --> Ausgabe auf Webseite mit video.js
+```
+## nginx und ffmpeg installieren
+```
+apt install nginx
+apt install ffmpeg
+```
+### HTML Seite anlegen
+`nano /var/www/html/hls.html`  
+und Folgendes einfügen:   
+```
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
+    <title>HTTP Live Streaming Example</title>
+    </head>
+    <body>
+      <script src="https://vjs.zencdn.net/7.19.2/video.js"></script>
+      <video
+        id="my-player"
+        class="video-js"
+        controls="true"
+        preload="auto"
+        auto="true"
+        width="480"
+        height="270"
+        data-setup='{}'>
+        <source src="http://192.168.55.101/stream.m3u8" type="application/x-mpegURL"></source>
+      </video>
+    </body>
+</html>
+```
+Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.
+### Testbild mit Uhrzeit erzeugen
+und mit ffmpeg in HLS umwandeln:  
+```
+while [ true ]; do date +%T | tee /var/www/html/text.txt ; sleep 1 ;  done
+```
+```
+torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -f lavfi -i smptehdbars=size=1920x1080:rate=120 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 2 stream.m3u8
+```
+Die Webseite kannst du dann so aufrufen:   
+`http://192.168.55.101/hls.html`,    
+funktioniert auch mit dem VLC Media Player.
+
+
