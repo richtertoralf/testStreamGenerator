@@ -208,7 +208,14 @@ Leider werden mir so nur die Sekunden angezeigt.
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000 -vf "drawtext=fontsize=120:fontcolor=white:x=1000:y=900:text='%{localtime\:%T}'" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 stream.m3u8
 ```
+### Anzeige der Uhrzeit (Sekunden) und der Laufzeit des Streams (Millisekunden)
+**und einen Beepton jede Sekunde** 
+```
+torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000:beep_factor=4 -ac 2 -vf "drawtext=fontsize=140:fontcolor=white:x=1000:y=870:text='%{localtime\:%T}' , drawtext=fontsize=50:fontcolor=white:x=1000:y=1000:text='%{pts\\:hms}'"  -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 stream.m3u8
+```
+
 **Allerdings habe ich hier immer noch eine sehr große Verzögerung von fast 5 Sekunden.**  
+
 
 Die Webseite kannst du dann so aufrufen:   
 **`http://192.168.55.101/hls.html`**,    
