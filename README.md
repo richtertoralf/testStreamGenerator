@@ -217,8 +217,9 @@ torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smpteh
 **Allerdings habe ich hier immer noch eine sehr große Verzögerung von fast 5 Sekunden.**  
 
 
-Die Webseite kannst du dann so aufrufen:   
+Die Webseite kannst du dann so im Browser aufrufen:   
 **`http://192.168.55.101/hls.html`**,    
-funktioniert auch mit dem VLC Media Player.
+oder so im VLC Media Player:  
+**`http://192.168.55.101/stream.m3u8`**   
 
 
