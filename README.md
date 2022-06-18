@@ -196,25 +196,27 @@ und Folgendes einfügen:
 **Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
 ### Testbild mit Uhrzeit erzeugen
 und mit ffmpeg in HLS umwandeln:  
-#### Umweg über 'textfile=text.txt:reload=1', um Zehntelsekunden anzuzeigen
+#### Variante 1: Umweg über 'textfile=text.txt:reload=1', um Zehntelsekunden anzuzeigen
 ```
 while [ true ]; do date +%T,%1N | tee /var/www/html/text.txt ; sleep 0.1; clear ;  done
 ```
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -f lavfi -i smptehdbars=size=1920x1080:rate=120 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 2 stream.m3u8
 ```
-#### mit Nutzung von '%{localtime}'   
+#### Variante 2: mit Nutzung von '%{localtime}'   
 Leider werden mir so nur die Sekunden angezeigt.  
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000 -vf "drawtext=fontsize=120:fontcolor=white:x=1000:y=900:text='%{localtime\:%T}'" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 stream.m3u8
 ```
-### Anzeige der Uhrzeit (Sekunden) und der Laufzeit des Streams (Millisekunden)
+### Variante 3: Anzeige der Uhrzeit (Sekunden) und der Laufzeit des Streams (Millisekunden)
 **und einen Beepton jede Sekunde** 
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000:beep_factor=4 -ac 2 -vf "drawtext=fontsize=140:fontcolor=white:x=1000:y=870:text='%{localtime\:%T}' , drawtext=fontsize=50:fontcolor=white:x=1000:y=1000:text='%{pts\\:hms}'"  -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 stream.m3u8
 ```
 
+
 >**Mit einer Verzögerung von knapp 5 Sekunden bin ich vermutlich schon an der Grenze des HLS Protokolls.**  
+
 
 
 Die Webseite kannst du dann so im Browser aufrufen:   
