@@ -164,6 +164,7 @@ ffmpeg SRT --> HLS --> Ausgabe auf Webseite mit video.js
 ```
 apt install nginx
 apt install ffmpeg
+adduser $USER www-data
 ```
 ### HTML Seite anlegen
 `nano /var/www/html/hls.html`  
