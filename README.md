@@ -171,27 +171,40 @@ und Folgendes einfügen:
 ```
 <!DOCTYPE html>
 <html lang="de">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
     <title>HTTP Live Streaming Example</title>
-  </head>
-  <body>
+    <style>
+        body {
+            background: #4C4C4C;
+            color: white;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+        h1 {
+            background-color: #1F1E1F;
+        }
+        h2 {
+            background-color: #3A393A;
+        }
+        section {
+            background-color: #464546;
+        }
+        .video-js {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
     <script src="https://vjs.zencdn.net/7.19.2/video.js"></script>
-    <video
-      id="my-player"
-      class="video-js"
-      controls="true"
-      preload="auto"
-      auto="true"
-      width="480"
-      height="270"
-      data-setup='{}'>
+    <video id="my-player" class="video-js" controls="true" preload="auto" auto="true" width="960" height="540" data-setup='{}'>
       <source src="http://192.168.55.101/stream.m3u8" type="application/x-mpegURL"></source>
     </video>
-  </body>
-</html>
+</body>
 ```
 **Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
 ### Testbild mit Uhrzeit erzeugen
