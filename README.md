@@ -193,17 +193,25 @@ und Folgendes einfügen:
     </body>
 </html>
 ```
-Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.
+**Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
 ### Testbild mit Uhrzeit erzeugen
 und mit ffmpeg in HLS umwandeln:  
+#### umständliche Variante, um Zehntelsekunden anzuzeigen
 ```
 while [ true ]; do date +%T | tee /var/www/html/text.txt ; sleep 1 ;  done
 ```
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -f lavfi -i smptehdbars=size=1920x1080:rate=120 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 2 stream.m3u8
 ```
+#### mit Nutzung von '%{localtime}'   
+Leider werden mir so nur die Sekunden angezeigt.  
+```
+torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000 -vf "drawtext=fontsize=120:fontcolor=white:x=1000:y=900:text='%{localtime\:%T}'" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 stream.m3u8
+```
+**Allerdings habe ich hier immer noch eine sehr große Verzögerung von fast 5 Sekunden.**  
+
 Die Webseite kannst du dann so aufrufen:   
-`http://192.168.55.101/hls.html`,    
+**`http://192.168.55.101/hls.html`**,    
 funktioniert auch mit dem VLC Media Player.
 
 
