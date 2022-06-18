@@ -196,9 +196,9 @@ und Folgendes einfügen:
 **Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
 ### Testbild mit Uhrzeit erzeugen
 und mit ffmpeg in HLS umwandeln:  
-#### umständliche Variante, um Zehntelsekunden anzuzeigen
+#### Umweg über 'textfile=text.txt:reload=1', um Zehntelsekunden anzuzeigen
 ```
-while [ true ]; do date +%T | tee /var/www/html/text.txt ; sleep 1 ;  done
+while [ true ]; do date +%T,%1N | tee /var/www/html/text.txt ; sleep 0.1; clear ;  done
 ```
 ```
 torichter@webServer-1:/var/www/html$ rm stream*.*; ffmpeg -f lavfi -i smptehdbars=size=1920x1080:rate=120 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 2 stream.m3u8
