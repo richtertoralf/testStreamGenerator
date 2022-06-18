@@ -176,21 +176,21 @@ und Folgendes einfügen:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
     <title>HTTP Live Streaming Example</title>
-    </head>
-    <body>
-      <script src="https://vjs.zencdn.net/7.19.2/video.js"></script>
-      <video
-        id="my-player"
-        class="video-js"
-        controls="true"
-        preload="auto"
-        auto="true"
-        width="480"
-        height="270"
-        data-setup='{}'>
-        <source src="http://192.168.55.101/stream.m3u8" type="application/x-mpegURL"></source>
-      </video>
-    </body>
+  </head>
+  <body>
+    <script src="https://vjs.zencdn.net/7.19.2/video.js"></script>
+    <video
+      id="my-player"
+      class="video-js"
+      controls="true"
+      preload="auto"
+      auto="true"
+      width="480"
+      height="270"
+      data-setup='{}'>
+      <source src="http://192.168.55.101/stream.m3u8" type="application/x-mpegURL"></source>
+    </video>
+  </body>
 </html>
 ```
 **Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
