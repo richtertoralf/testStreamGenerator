@@ -48,6 +48,10 @@ current_ffmpeg=$(ls | grep ffmpeg-git-20)
 cd $current_ffmpeg
 sudo mv ffmpeg ffprobe /usr/local/bin/
 ```
+```
+# oder ganz einfach:
+sudo apt install ffmpeg
+```
 Das Folgende kannst du in einem Script verwenden, um zu prüfen , ob die Installation erfolgreich war.
 
 ```
