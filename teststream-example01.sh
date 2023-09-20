@@ -11,7 +11,7 @@ Port="4999"
 
 # Setze die Auflösungs- und Framerate-Variablen
 resolution="1920x1080"
-framerate="60"
+framerate="25"
 
 # Setze den zusätzlichen Text
 extra_text="www.snowgames.live"
@@ -22,7 +22,7 @@ font_file="DejaVu Sans Mono"
 # FFmpeg-Befehl
 ffmpeg_command="ffmpeg -loglevel error -re -f lavfi -i smptehdbars=size=$resolution:rate=$framerate \
 -f lavfi -i sine=frequency=1000:sample_rate=48000:beep_factor=4 -ac 2 \
--vf \"drawtext=fontsize=50:fontfile='$font_file':fontcolor=white:x=1000:y=880:text='%{localtime\:%T}', \
+-vf \"drawtext=fontsize=50:fontfile='$font_file':fontcolor=white:x=1000:y=920:text='%{localtime\:%T}', \
     drawtext=fontsize=50:fontfile='$font_file':fontcolor=white:x=970:y=1000:text='%{pts\\:hms}', \
     drawtext=fontsize=50:fontfile='$font_file':fontcolor=white:x=20:y=20:text='$extra_text', \
     drawtext=fontsize=50:fontfile="$font_file":fontcolor=white:x=20:y=80:text='$IPv4\:$Port'\" \
