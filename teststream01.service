@@ -1,0 +1,13 @@
+[Unit]
+Description=FFmpeg Teststream01 srt-listener Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/teststream01.sh
+WorkingDirectory=/usr/local/bin
+Restart=always
+Restart=1h
+
+[Install]
+WantedBy=multi-user.target
