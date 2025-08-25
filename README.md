@@ -1,4 +1,5 @@
 # testStreamGenerator
+**nicht mehr aktuell**
 
 getestet auf Ubuntu 20.04  
 >Ich habe diesen "TestStreamGenerator" auf einem kleinen virtuellen Server in der Cloud laufen. Ich simuliere damit Streams, um z.B. zu testen, ob OBS oder vMix Instanzen, die ich in der Cloud installiert habe, Streams empfangen können.  
@@ -6,16 +7,24 @@ getestet auf Ubuntu 20.04
 
 # Installationen
 ## srt-live-transmit
->The srt-live-transmit tool is a universal data transport tool with a purpose to transport data between SRT and other medium. At the same time it is just a sample application to show some of the powerful features of SRT. We encourage you to use SRT library itself integrated into your products.  
+>The srt-live-transmit tool is a universal data transport tool with a purpose to transport data between SRT and other medium. At the same time it is just a sample application to show some of the powerful features of SRT. We encourage you to use SRT library itself integrated into your products.
 
 ```
-sudo apt install tclsh pkg-config cmake libssl-dev build-essential -y
-cd /usr/bin
-git clone https://github.com/Haivision/srt.git
+sudo apt update
+sudo apt install -y srt-tools libsrt-openssl-dev
+# Optional: srt-live-transmit testen
+srt-live-transmit -version
+```
+
+```
+sudo apt install -y tclsh pkg-config cmake libssl-dev build-essential git
+sudo mkdir -p /usr/local/src && cd /usr/local/src
+sudo git clone https://github.com/Haivision/srt.git
 cd srt
 ./configure
-make
+make -j"$(nproc)"
 sudo make install
+sudo ldconfig
 
 ```
 Das Folgende kannst du in ein Skript einfügen, um zu prüfen, ob die Installation erfolgreich war.
@@ -78,6 +87,22 @@ ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v 
 targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
 ffmpeg -r 30 -f lavfi -i testsrc -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -pix_fmt yuv420p -f mpegts $targetServer
 ```
+oder:
+```
+# Listener (Server hält Port offen):
+targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316&transtype=live&latency=150&linger=0"
+ffmpeg -re -f lavfi -i testsrc=size=1920x1080:rate=30 \
+  -c:v libx264 -preset veryfast -tune zerolatency -profile:v high -pix_fmt yuv420p \
+  -b:v 3500k -maxrate 3500k -bufsize 7000k \
+  -g 60 -keyint_min 60 -sc_threshold 0 \
+  -f mpegts "$targetServer"
+
+```
+Warum:  
+latency=150 macht OBS/VMix toleranter bei Spikes.  
+transtype=live ist für Live-Flow gedacht.  
+linger=0 verhindert „hängende“ Sockets beim Stop.  
+
 Bei dieser Variante liegt der Teststream auf dem Server abrufbereit und kann mit vMix oder OBS, als SRT **caller** abgerufen werden.  
 **Achtung:** Der hier verwendete Port 9999 muss in der Firewall für UDP-Verkehr freigegeben werden.  
 Das SRT Protokoll bietet aber noch jede Menge weiterer Konfigurationsmöglichkeiten.  
@@ -86,12 +111,16 @@ Das SRT Protokoll bietet aber noch jede Menge weiterer Konfigurationsmöglichkei
 
 ### weitere Varianten
 ```
-# Textdatei, mit sich selbst aktualisierender Uhrzeit erzeugen:
-while [ true ]; do date +%T,%1N > text.txt ; sleep 0.9 ;  done
+targetServer="srt://0.0.0.0:9999?mode=listener&pkt_size=1316&transtype=live&latency=150&linger=0"
 
-# FFmpeg
-targetserver="srt://0.0.0.0:9999?mode=listener&pkt_size=1316"
-ffmpeg -v debug  -f lavfi -i smptehdbars=size=1920x1080:rate=30 -f lavfi -i sine=1000 -vf "drawtext=textfile=text.txt:reload=1:fontsize=120:fontcolor=white:x=1000:y=900"  -f mpegts $targetServer
+# Uhrzeitdatei erzeugen (Sekunden + Zehntel)
+while true; do date +%T,%1N > /tmp/text.txt; sleep 0.1; done &
+
+ffmpeg -re -f lavfi -i smptehdbars=size=1920x1080:rate=30 \
+  -f lavfi -i sine=1000 \
+  -vf "drawtext=textfile=/tmp/text.txt:reload=1:fontsize=72:fontcolor=white:x=1000:y=900" \
+  -c:v libx264 -preset veryfast -tune zerolatency -g 60 -keyint_min 60 -sc_threshold 0 \
+  -f mpegts "$targetServer"
 
 ```
 
@@ -174,6 +203,21 @@ apt install nginx
 apt install ffmpeg
 adduser $USER www-data
 ```
+### Nginx vorbereiten
+MIME-Types sicherstellen (/etc/nginx/mime.types):
+```bash
+types {
+    application/vnd.apple.mpegurl m3u8;
+    application/x-mpegURL m3u8;
+    video/mp2t ts;
+}
+```
+optional in server {}
+```nginx
+sendfile off;    # vermeidet Serving halbfertiger Segmente
+
+```
+
 ### HTML Seite anlegen
 `nano /var/www/html/hls.html`  
 und Folgendes einfügen:   
@@ -216,6 +260,7 @@ und Folgendes einfügen:
 </body>
 ```
 **Mein Server hat in diesem Beispiel die IP-Adresse: 192.168.55.101.**  
+
 ### Testbild mit Uhrzeit erzeugen
 und mit ffmpeg in HLS umwandeln:  
 #### Variante 1: Umweg über 'textfile=text.txt:reload=1', um Zehntelsekunden anzuzeigen
@@ -237,6 +282,27 @@ rm stream*.*;
 ffmpeg -loglevel error -re -f lavfi -i smptehdbars=size=1920x1080:rate=60 -f lavfi -i sine=frequency=1000:sample_rate=48000:beep_factor=4 -ac 2 -vf "drawtext=fontsize=140:fontcolor=white:x=1000:y=870:text='%{localtime\:%T}' , drawtext=fontsize=50:fontcolor=white:x=1000:y=1000:text='%{pts\\:hms}'" -c:v libx264 -g 60 -sc_threshold 0 -f hls -hls_time 1 -hls_playlist_type event -hls_wrap 1000 stream.m3u8
 ```
 
+#### etwas sauberer, HLS-Pipeline (Testbild -> HLS)
+```bash
+cd /var/www/hls
+rm -f stream*.*
+ffmpeg -loglevel warning -re \
+  -f lavfi -i smptehdbars=size=1920x1080:rate=60 \
+  -f lavfi -i sine=frequency=1000:sample_rate=48000 \
+  -vf "drawtext=fontsize=140:fontcolor=white:x=1000:y=870:text='%{localtime\:%T}', \
+       drawtext=fontsize=50:fontcolor=white:x=1000:y=1000:text='%{pts\\:hms}'" \
+  -c:v libx264 -preset veryfast -profile:v high -pix_fmt yuv420p \
+  -g 120 -keyint_min 120 -sc_threshold 0 \
+  -c:a aac -ar 48000 -ac 2 -b:a 128k \
+  -f hls -hls_time 2 -hls_playlist_type event \
+  -hls_flags independent_segments+delete_segments+temp_file+program_date_time \
+  -hls_segment_filename 'stream_%05d.ts' stream.m3u8
+
+```
+Hinweise:  
+independent_segments → Keyframes an Segmentanfang garantiert.  
+temp_file → Segment erst serven, wenn fertig geschrieben.  
+program_date_time → Zeitstempel im Manifest (hilfreich bei Sync/Debug).  
 
 >**Mit einer Verzögerung von knapp 5 Sekunden bin ich vermutlich schon an der Grenze des HLS Protokolls.**  
 
