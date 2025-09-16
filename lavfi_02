@@ -17,3 +17,34 @@ drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='   www.S
 -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
 -c:a aac -b:a 128k -ar 48000 -ac 2 \
 -f mpegts "srt://$HOST:$PORT?mode=caller&latency=200&pkt_size=1316&streamid=publish:$STREAMID"
+
+
+# Was der Stream macht:
+# Video-Input:
+# ✅ Testbild 1920x1080 mit 50 fps
+# ✅ Schwarzer Transparenzbalken unten
+# ✅ Deutsches Datum (TT.MM.JJ) links
+# ✅ Uhrzeit mit Doppelpunkten (HH:MM:SS) daneben
+# ✅ Lauftext "www.Snowgames.Live" in rot
+
+# Audio-Input:
+# ✅ Grundton: 440 Hz Sinuswelle (Kammerton A)
+# ✅ Linker Kanal-Beep: 1000 Hz alle 2 Sekunden
+# ✅ Rechter Kanal-Beep: 1000 Hz versetzt alle 2 Sekunden
+# ✅ Pulsator-Effekt für Stereo-Panning
+
+# Video-Encoding:
+# ✅ H.264 High Profile Level 4.2
+# ✅ 6000 kbps Bitrate (perfekt für 1080p50)
+# ✅ GOP-Größe 100 (2 Sekunden bei 50 fps)
+# ✅ BT.709 Farbraum
+
+# Audio-Encoding:
+# ✅ AAC 128k stereo
+# ✅ 48 kHz Sample Rate
+
+# Ausgabe:
+# ✅ SRT-Stream zu 192.168.95.18:8890
+# ✅ Stream-ID: snowgames-test
+# ✅ 200 ms Latency
+# ✅ 1316 Byte Paketgröße (optimiert für SRT)
