@@ -1,0 +1,17 @@
+HOST=192.168.95.18; PORT=8890; STREAMID="snowgames-test"
+
+ffmpeg -re \
+-f lavfi -i "testsrc2=size=1920x1080:rate=50,\
+drawbox=x=0:y=ih-80:w=iw:h=80:color=black@0.6:t=fill,\
+drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='%{localtime\:%d.%m.%y}':x=3:y=80:fontsize=80:fontcolor=white:box=1:boxcolor=0x00000088,\
+drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='%{localtime\\:%H\\\\\\:%M\\\\\\:%S}':x=400:y=80:fontsize=80:fontcolor=white:box=1:boxcolor=0x00000088,\
+drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='   www.Snowgames.Live   ':x=w-mod(t*200\,w+tw):y=h-60:fontsize=48:fontcolor=red:shadowx=2:shadowy=2" \
+-f lavfi -i "sine=frequency=440:sample_rate=48000" \
+-f lavfi -i "aevalsrc=exprs='between(mod(t,2),0,0.06)*sin(2*PI*1000*t)':s=48000" \
+-f lavfi -i "aevalsrc=exprs='between(mod(t+1,2),0,0.06)*sin(2*PI*1000*t)':s=48000" \
+-filter_complex "[1:a]aformat=channel_layouts=stereo,apulsator=mode=sine:hz=0.2:width=1.0[base];[2:a]aformat=channel_layouts=stereo,pan=stereo|c0=c0|c1=0*c0[beepL];[3:a]aformat=channel_layouts=stereo,pan=stereo|c0=0*c0|c1=c0[beepR];[base][beepL][beepR]amix=inputs=3:normalize=0[aout]" \
+-map 0:v -map "[aout]" -pix_fmt yuv420p \
+-c:v libx264 -preset veryfast -tune zerolatency -profile:v high -level 4.2 \
+-b:v 3000k -maxrate 3200k -bufsize 6000k -g 100 \
+-c:a aac -b:a 128k -ar 48000 -ac 2 \
+-f mpegts "srt://$HOST:$PORT?mode=caller&transtype=live&pkt_size=1316&streamid=publish:$STREAMID"
