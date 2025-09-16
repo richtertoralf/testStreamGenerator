@@ -6,6 +6,9 @@ set -Eeuo pipefail
 # 1080p50, 6 Mbit/s, Datum + Uhrzeit + Ticker
 # Audio: 440 Hz mit L/R-Pendeln + 1 kHz Beeps alternierend L/R
 # FFmpeg ≥ 6.x (Ubuntu 24.04 ok)
+#
+# Achtung, kostet jede Menge CPU-Leistung !!
+# läuft deshalb nicht auf einem RaspberryPi 4
 # ---------------------------------------
 
 # ---- Konfiguration (bei Bedarf hier anpassen) ----
