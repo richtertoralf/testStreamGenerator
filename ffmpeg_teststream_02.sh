@@ -1,15 +1,29 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# ---------------------------------------
-# SnowgamesLive Teststream → SRT
-# 1080p50, 6 Mbit/s, Datum + Uhrzeit + Ticker
-# Audio: 440 Hz mit L/R-Pendeln + 1 kHz Beeps alternierend L/R
-# FFmpeg ≥ 6.x (Ubuntu 24.04 ok)
+# ---------------------------------------------------------------------------
+# FFmpeg High-Load Teststream (Referenz / Archiv)
 #
-# Achtung, kostet jede Menge CPU-Leistung !!
-# läuft deshalb nicht auf einem RaspberryPi 4
-# ---------------------------------------
+# Voraussetzungen:
+#  - FFmpeg ≥ 6.x (getestet mit Ubuntu 24.04)
+#
+# Zweck:
+#  - Realistischer Belastungs- und Referenzstream für Video, Audio und SRT
+#
+# Technik:
+#  - testsrc2 1920x1080 @50 fps + Drawtext (Datum, Uhrzeit, Ticker)
+#  - H.264 High@4.2, ~6 Mbit/s, GOP=100, BT.709
+#  - Audio: 440 Hz Grundton + 1 kHz Beeps alternierend L/R
+#  - MPEG-TS → SRT (Caller, pkt_size=1316, Latenz konfigurierbar)
+#
+# Grenzen:
+#  - Sehr CPU-intensiv (kein Raspberry Pi / kein Dauerbetrieb)
+#  - Monolithischer FFmpeg-Aufruf, keine externe Parametrisierung
+#
+# Produktiver Ansatz:
+# https://github.com/richtertoralf/ffmpeg-Teststreams
+# ---------------------------------------------------------------------------
+
 
 # ---- Konfiguration (bei Bedarf hier anpassen) ----
 HOST="192.168.95.18"
