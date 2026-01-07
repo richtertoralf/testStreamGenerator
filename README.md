@@ -1,5 +1,47 @@
-# testStreamGenerator
-**nicht mehr aktuell**
+# testStreamGenerator  
+⚠️ **Archiv / nicht mehr aktiv weiterentwickelt**
+
+Dieses Repository ist ein **historisch gewachsenes Experimentier- und Wissensarchiv** rund um FFmpeg-Teststreams, SRT, RTMP, systemd und HLS.
+
+Es enthält:
+- frühe Versuche zur Erzeugung von Video-Teststreams mit FFmpeg  
+- praktische Erfahrungen mit SRT-Parametern (OBS / vMix-Toleranzen, Latenzen, Listener/Caller-Modi)  
+- Beispiele für RTMP- und SRT-Streams  
+- erste systemd-Services ohne zentrale Konfiguration  
+- umfangreiche FFmpeg-Filter- und Drawtext-Experimente  
+- HLS-Pipelines inklusive HTML-Player-Beispielen  
+
+Viele Inhalte sind **experimentell**, **inkonsistent strukturiert** und teilweise **veraltet**, spiegeln aber reale Praxis-Erfahrungen wider und dienen weiterhin als **Nachschlagewerk**.
+
+## ✅ Aktuelle, produktive Lösung
+
+Die hier gesammelten Erkenntnisse sind in ein **neues, deutlich strukturierteres und wartbares Projekt** eingeflossen:
+
+👉 **FFmpeg Teststreams mit systemd**  
+🔗 https://github.com/richtertoralf/ffmpeg-Teststreams
+
+Dieses neue Repository bietet:
+- zentrale Konfiguration über `streams.conf`
+- automatische Generierung einzelner Stream-INIs
+- systemd-Template-Units
+- saubere Start/Stop-Steuerung
+- reproduzierbare und realistische Teststreams
+- klare Trennung von Konfiguration, Logik und Ausführung
+
+**Für produktive Nutzung, Tests und Dauerbetrieb wird ausdrücklich Repo A empfohlen.**
+
+## 📚 Zweck dieses Repositories
+
+Dieses Repo bleibt bewusst erhalten als:
+- technisches Notizbuch
+- Sammlung realer FFmpeg/SRT-Erfahrungen
+- Dokumentation des Entwicklungswegs
+- Inspirations- und Referenzquelle
+
+Es ist **kein fertiges Tool**, sondern ein **Arbeits- und Lernarchiv**.
+
+---
+
 
 getestet auf Ubuntu 20.04  
 >Ich habe diesen "TestStreamGenerator" auf einem kleinen virtuellen Server in der Cloud laufen. Ich simuliere damit Streams, um z.B. zu testen, ob OBS oder vMix Instanzen, die ich in der Cloud installiert habe, Streams empfangen können.  
