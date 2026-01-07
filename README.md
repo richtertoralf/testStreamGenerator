@@ -13,9 +13,9 @@ Es enthält:
 
 Viele Inhalte sind **experimentell**, **inkonsistent strukturiert** und teilweise **veraltet**, spiegeln aber reale Praxis-Erfahrungen wider und dienen weiterhin als **Nachschlagewerk**.
 
-## ✅ Aktuelle, produktive Lösung
+## Aktuelle, produktive Lösung
 
-Die hier gesammelten Erkenntnisse sind in ein **neues, deutlich strukturierteres und wartbares Projekt** eingeflossen:
+Die hier gesammelten Erkenntnisse sind u.a. in ein **neues, deutlich strukturierteres und wartbares Projekt** eingeflossen:
 
 👉 **FFmpeg Teststreams mit systemd**  
 🔗 https://github.com/richtertoralf/ffmpeg-Teststreams
@@ -30,7 +30,7 @@ Dieses neue Repository bietet:
 
 **Für produktive Nutzung, Tests und Dauerbetrieb wird ausdrücklich Repo A empfohlen.**
 
-## 📚 Zweck dieses Repositories
+## Zweck dieses Repositories
 
 Dieses Repo bleibt bewusst erhalten als:
 - technisches Notizbuch
@@ -39,6 +39,41 @@ Dieses Repo bleibt bewusst erhalten als:
 - Inspirations- und Referenzquelle
 
 Es ist **kein fertiges Tool**, sondern ein **Arbeits- und Lernarchiv**.
+
+## Inhalte & Einordnung
+
+Dieses Repository enthält mehrere Skripte und eine systemd-Service-Unit aus
+unterschiedlichen Entwicklungsphasen. Sie dienen als Referenz und Archiv.
+
+### Skripte
+
+- **ffmpeg_teststream_srt_basic.sh**  
+  Einfacher FFmpeg-Teststream (SMPTE-Balken, Uhrzeit, PTS) als  
+  **SRT Listener** für manuelle Tests mit OBS / vMix.  
+  Geringe Last, frühe Testphase.
+
+- **ffmpeg_teststream_srt_1080p50_ref.sh**  
+  High-Load-Referenzstream (1080p50, Drawtext, Ticker, Audio-Referenz L/R).  
+  Dient zur Belastungs-, Sync- und Kanalprüfung von Encoder, Decoder und Netzwerk.  
+  **FFmpeg ≥ 6.x (getestet mit Ubuntu 24.04)** erforderlich.
+
+- **lavfi_02**  
+  Reiner **FFmpeg-lavfi Playground** (kein klassisches Skript).  
+  Enthält einen komplexen Filtergraph für Video-, Audio- und SRT-Tests.  
+  Gedacht als technische Referenz und Experimentiergrundlage.
+
+### systemd
+
+- **ffmpeg-teststream-srt-basic.service**  
+  Beispielhafte systemd-Service-Unit zum Starten eines Teststreams.  
+  Manuell gepflegt, **kein Template**, bewusst nicht für produktive Setups gedacht.
+
+## Hinweis
+
+Für strukturierte, parametrisierte und systemd-basierte Teststreams  
+siehe das Nachfolgeprojekt:
+
+👉 https://github.com/richtertoralf/ffmpeg-Teststreams
 
 ---
 
