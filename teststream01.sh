@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# ---------------------------------------------------------------------------
+# FFmpeg Teststream (Experiment / Archiv)
+#
+# Erzeugt einen einfachen Video-Teststream (smptehdbars, Uhrzeit, PTS)
+# und stellt ihn als SRT-Listener bereit (für OBS / vMix als Caller).
+#
+# Eigenschaften:
+#  - 1920x1080 @25 fps, H.264 → MPEG-TS → SRT
+#  - Drawtext: localtime, pts:hms, Host/Port, URL
+#  - Audio: einfacher 1 kHz Referenzton (Stereo)
+#
+# Grenzen:
+#  - Monolithischer FFmpeg-Aufruf, keine Parametrisierung
+#  - Keine systemd-Integration, begrenzte Fehlerbehandlung
+#  - Für manuelle Tests, nicht für Dauerbetrieb
+#
+# Produktive Alternative:
+# https://github.com/richtertoralf/ffmpeg-Teststreams
+# ---------------------------------------------------------------------------
+
 # Setze die Zielpfad-Variable
 #stream_target="rtmp://192.168.100.100/live/stream"
 stream_target="srt://0.0.0.0:4999?mode=listener"
