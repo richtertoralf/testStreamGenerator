@@ -1,0 +1,16 @@
+[Unit]
+Description=FFmpeg SRT Basic Teststream (Listener)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ffmpeg_teststream_srt_basic.sh
+WorkingDirectory=/usr/local/bin
+
+Restart=always
+RestartSec=10
+RuntimeMaxSec=1h
+
+[Install]
+WantedBy=multi-user.target
