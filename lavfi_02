@@ -1,3 +1,7 @@
+# lavfi_02
+# FFmpeg lavfi Playground: komplexer Video-/Audio-Filtergraph + SRT
+# Referenz / Experiment – nicht für produktiven Einsatz gedacht
+
 HOST=192.168.95.18; PORT=8890; STREAMID="snowgames-test"
 
 ffmpeg -re \
